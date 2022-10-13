@@ -1,0 +1,5 @@
+#!/bin/bash
+cd ./public/docs &&
+insomnia-documenter --config ./insomnia.json &&
+sed -r -i -e 's|<div id="app"></div>|<div id="app" data-root="/docs-api"></div>|g' index.html &&
+cd ../../;

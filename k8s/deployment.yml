@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: takever
+spec:
+  selector:
+    matchLabels:
+      app: takever
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: takever
+    spec:
+      containers:
+        - name: takever
+          image: despossivel/takever:latest
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: takever-upload
+              mountPath: /usr/src/app/public/uploads
+      imagePullSecrets:
+        - name: regcred
+
+
+      volumes:
+        - name: takever-upload
+          persistentVolumeClaim:
+            claimName: takever-upload

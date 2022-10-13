@@ -1,0 +1,19 @@
+version: "2"
+services:
+  takever:
+    container_name: takever
+    build: .
+    # container_name: takever
+    command: pm2-runtime process.json
+    volumes:
+      - .:/usr/takever
+      - ./node_modules:/usr/takever/node_modules
+    ports:
+      - "5000:5000"
+    networks:
+      - takever
+    restart: always
+
+networks:
+  takever:
+    driver: bridge
