@@ -39,7 +39,6 @@ describe('Users', () => {
         novoUsuarioDemo.email = 'daniel2@gmail.com';
         novoUsuarioDemo.phone = '9499910000384933';
  
-
         const response = request(app)
             .post('/user')
             .set('Authorization', token)

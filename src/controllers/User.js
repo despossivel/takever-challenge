@@ -22,12 +22,9 @@ class User {
 
 
 	async store(req, res) {
-		const doc = req.body;
-
-	 
-
-		const user = await Model.create(doc);
-		const { _id } = user;
+		const doc = req.body,
+		user = await Model.create(doc),
+		{ _id } = user;
 
 		// await SMTP.send(doc.email, 'Confirmar conta no Teakever', `Acesse o link para confirmar a sua conta
 		// 	${process.env.HOST}/public/confirmar/conta/${_id}`, ``).catch(e => console.error(e))
@@ -36,11 +33,11 @@ class User {
 	}
 
 	async update(req, res) {
-		const { _id } = req.params;
-		const { senha, ...rest } = req.body;
-		let doc = rest;
-
-		const user = await Model.updateOne({ _id }, doc);
+		const { _id } = req.params,
+		 { senha, ...rest } = req.body,
+		 doc = rest,
+		 user = await Model.updateOne({ _id }, doc);
+		 
 		user.n == 0 ?
 			res.status(422).send({ errors: [{ "msg": "Could not update!" }] }) :
 			res.status(200).send(user);
@@ -48,8 +45,9 @@ class User {
 	}
 
 	async destroy(req, res) {
-		const { _id } = req.params;
-		const user = await Model.deleteOne({ _id });
+		const { _id } = req.params,
+		 user = await Model.deleteOne({ _id });
+
 		user.n == 0 ?
 			res.status(422).send({ errors: [{ "msg": "Unable to remove user!" }] }) :
 			res.status(200).send(user);

@@ -89,6 +89,9 @@ const tvShow = new mongoose.Schema({
 	genres: [{
 		type: String
 	}],
+	actors: [{
+		type: String
+	}],
 	pictures: [{
 		type: String
 	}],
