@@ -28,63 +28,57 @@ const tvShow = new mongoose.Schema({
 	},
 	start_date: {
 		type: Date,
-		require: true,
-		setDefaultOnInsert: true
+		require: true
 	},
 	end_date: {
 		type: Date,
-		require: true,
-		setDefaultOnInsert: true
+		require: true
 	},
 	country: {
 		type: String,
-		require: true,
-		setDefaultOnInsert: true
+		require: true
 	},
 	status: {
 		type: String,
-		require: true,
-		setDefaultOnInsert: true
+		require: true
 	},
 	runtime: {
 		type: String,
-		require: true,
-		setDefaultOnInsert: true
+		require: true
 	},
 	network: {
 		type: String,
-		require: true,
-		setDefaultOnInsert: true
+		require: true
 	},
 	youtube_link: {
 		type: String,
-		require: true,
-		setDefaultOnInsert: true
+		require: true
 	},
 	image_path: {
 		type: String,
-		require: true,
-		setDefaultOnInsert: true
+		require: true
 	},
 	image_thumbnail_path: {
 		type: String,
-		require: true,
-		setDefaultOnInsert: true
+		require: true
 	},
 	rating: {
-		type: mongoose.Types.Decimal128,
-		require: true,
-		setDefaultOnInsert: true
+		type: Number,
+		require: true
 	},
 	rating_count: {
 		type: Number,
-		require: true,
-		setDefaultOnInsert: true
+		require: true
 	},
-	countdown: {
-		type: Number,
+	// countdown: {
+	// 	type: Number,
+	// 	require: false,
+	// 	setDefaultOnInsert: 0
+	// },
+	type: {
+		type: String,
 		require: true,
-		setDefaultOnInsert: true
+		setDefaultOnInsert: ''
 	},
 	genres: [{
 		type: String
@@ -100,22 +94,22 @@ const tvShow = new mongoose.Schema({
 			season: {
 				type: Number,
 				require: true,
-				setDefaultOnInsert: true
+
 			},
 			episode: {
 				type: Number,
 				require: true,
-				setDefaultOnInsert: true
+
 			},
 			name: {
 				type: String,
 				require: true,
-				setDefaultOnInsert: true
+
 			},
 			air_date: {
 				type: Date,
 				require: true,
-				setDefaultOnInsert: true
+
 			}
 		  }
 	],

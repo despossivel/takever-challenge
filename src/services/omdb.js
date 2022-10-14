@@ -5,7 +5,10 @@ const axios = require('axios').default,
  const getOmdbActors = async (t) => {
     try{
         const { data } = await axios.get(`${host}/?t=${t}&apikey=${apikey}`);
-        return  data.Actors;
+        return  {
+            actors: data.Actors,
+            type: data.Type
+        };
     }catch(e){
         throw e;
     } 

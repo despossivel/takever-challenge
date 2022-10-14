@@ -22,13 +22,19 @@ const axios = require('axios').default,
  const getDetails = async (q) => {
      try{
          const { data } = await axios.get(`${host}/show-details?q=${q}`);
-         let tvShow = {};
+         let tvShow = false;
  
         if(typeof data === 'object'){
             const omdbResponse = await getOmdbActors(data?.tvShow?.name),
-                 actors = omdbResponse  ? omdbResponse.split(",").map(item=>item.trimStart()) : [];
-            tvShow = typeof data === 'object' ? data?.tvShow : {};
-            tvShow.actors = actors;
+            actors = omdbResponse?.actors  ? omdbResponse?.actors?.split(",").map(item=>item.trimStart()) : [],
+            type = omdbResponse?.type;
+
+            if(data?.tvShow){
+                tvShow = data?.tvShow;
+                tvShow.actors = actors;
+                tvShow.type = type;
+            }
+ 
         }
  
          return tvShow;
