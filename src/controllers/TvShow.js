@@ -1,5 +1,8 @@
 const Model = require('../models/TvShow'),
-	 mongoose = require('mongoose');
+	 mongoose = require('mongoose'),
+	 {
+		resolveQuerys
+	 } = require('../utils');
 
 
 class TvShow {
@@ -15,22 +18,13 @@ class TvShow {
 	}
 
 	async index(req, res) {
-		let query = {};
-
-		const { genre, actor, page = 1, limit = 10 } = req.query,
+		const { page = 1, limit = 10 } = req.query,
 				options = {
 					page: page,
 					limit: limit
-				};
-				
-		if(genre) {
-			query = { genres: { "$in" : typeof genre == 'object' ? genre : [genre]} };
-		}
-		if(actor) {
-			query = { actors: { "$in" : typeof actor == 'object' ? actor : [actor]}, ...query };
-		}
-
-		const tvShows = await Model.paginate({...query}, options) 
+				},
+				query = resolveQuerys(req.query),
+		 		tvShows = await Model.paginate({...query}, options) 
 			 
 		!Boolean(tvShows) ? res.status(404).send({ errors: [{ "msg": "Tv Shows not found!" }] }) :
 			res.status(200).send(tvShows);
