@@ -4,7 +4,7 @@ const Home = require('./home'),
         TvShow = require('./tvShow'),
         MostPopular = require('./mostPopular'),
         Users = require('./user'),
-        FavoriteTvShow = require('./FavoriteTvShow');
+        FavoriteTvShow = require('./favoriteTvShow');
 
 module.exports = [
     Home,

@@ -10,21 +10,12 @@ const Model = require('../models/FavoriteTvShow'),
 class FavoriteTvShow {
 
 	async store(req, res) {
-
-	
-		const json = req.body;
-		const checkShow =  await TvShow.count({
-			id: json.tv_show_id
-		})
-
-		const checkFavoriteShow =  await Model.count({
-			tv_show_id: json.tv_show_id,
-			user_id: json.user_id
-		})
-
-
-		console.log(checkFavoriteShow)
-
+		const json = req.body,
+			 [checkShow, checkFavoriteShow] = await Promise.all([
+				TvShow.count({ id: json.tv_show_id }),
+				Model.count({ tv_show_id: json.tv_show_id, user_id: json.user_id })
+			]);
+ 
 		if(!Boolean(checkShow)) return res.status(404).send({ errors: [{ "msg": "Favorite Tv Shows not found!" }] });
 
 		if(Boolean(checkFavoriteShow))  return res.status(422).send({ errors: [{ "msg": "Favorite Tv Shows already added!" }] });
