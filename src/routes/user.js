@@ -1,7 +1,7 @@
 const { Router } = require('express'),
     route = new Router(),
     middleware = require('../middlewares/routes/user'),
-    User = require('../controllers/user');
+    User = require('../controllers/User');
 
 route.get('/users', middleware.index, User.index)
 route.get('/user/:_id', middleware.show, User.show)
