@@ -4,15 +4,14 @@ with the proposal to consume https://www.episodate.com storing data in
 a NoSQL(MongoDB) through a job.
 
 The data of an API can be REST consumption services, through
-which your documentation to get started can be found at the url below, after the REST server.
+which your documentation to get started can be found at the url below or [here](https://takever-charllege.herokuapp.com/docs-api), after the REST server.
 
 ```bash
-    http://localhost:5005/docs-api
+http://localhost:5005/docs-api
 ```
 
 this project is covered by unit tests and other tests.
 to test the integrity of the test run the command below.
-
 
 ##### All commands can be executed using npm if desired
 
