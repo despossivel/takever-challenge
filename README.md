@@ -22,7 +22,11 @@ yarn test
 to populate the database run
 
 ```bash
-yarn cron
+yarn cron 
+```
+or 
+```bash
+node ./.cron/populate.js
 ```
 
 to start the REST server
