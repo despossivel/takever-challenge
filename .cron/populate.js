@@ -10,8 +10,7 @@ const connection = mongoose.connect(`mongodb+srv://dev:qazx123.@cluster0-ep251.g
     console.log(`Mongoose se conectou som sucesso ao banco Dev!`)
 }).catch(e => console.error(e))
 
- 
-
+  
 const TvShow = require('../src/models/TvShow');
 const MostPopular = require('../src/models/MostPopular');
 
@@ -30,5 +29,6 @@ const run = async () => {
  
 
  
- run()
+//  run()
+console.log('npm run cron')
  

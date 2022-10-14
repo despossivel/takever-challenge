@@ -3,7 +3,8 @@ const Home = require('./home'),
         Auth = require('./auth'),
         TvShow = require('./tvShow'),
         MostPopular = require('./mostPopular'),
-        Users = require('./user');
+        Users = require('./user'),
+        FavoriteTvShow = require('./FavoriteTvShow');
 
 module.exports = [
     Home,
@@ -11,5 +12,6 @@ module.exports = [
     Auth,
     TvShow,
     MostPopular,
-    Users
+    Users,
+    FavoriteTvShow
 ];
