@@ -1,3 +1,8 @@
+require('dotenv').config({
+    path: process.env.NODE_ENV == 'dev' ? '.env.dev' : process.env.NODE_ENV == 'test' ? '.env.test' : '.env'
+})
+
+
 const mongoose = require('mongoose'),
     axios = require('axios').default,
  { getMostPopular, getDetails } = require('../src/services/episodate');

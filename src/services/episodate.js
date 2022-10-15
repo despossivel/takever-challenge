@@ -1,11 +1,11 @@
 const axios = require('axios').default,
     { getOmdbActors } = require('./omdb'),
-    host = 'https://www.episodate.com/api';
+    host = process.env.EPISODATE;
 
  const getMostPopular = async () => {
      try{
        
-         let pages = 1,
+         let pages = 3,
           allTvShows = [];
           
          for (let page = 1; page <= pages; page++) {
