@@ -15,10 +15,7 @@ const resolveQuerys = (queryParams) => {
         query = { type, ...query };
     }
 
-
     return query;
-
-
 }
 
 
