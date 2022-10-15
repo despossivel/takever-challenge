@@ -5,7 +5,8 @@ const Model = require('../models/FavoriteTvShow'),
 	 {
 		resolveQuerys,
 		resolveOptions,
-		response
+		response,
+		resolveDocs
 	 } = require('../utils');
 
 
@@ -19,19 +20,13 @@ class FavoriteTvShow {
 			]);
  
 		if(!Boolean(checkShow)) return res.status(404).send({ errors: [{ "msg": "Favorite Tv Shows not found!" }] });
-
 		if(Boolean(checkFavoriteShow))  return res.status(422).send({ errors: [{ "msg": "Favorite Tv Shows already added!" }] });
 
 		const tvShow = await Model.create({
 				...json
 			});
  
-
-			response(res, {
-				docs: [tvShow]
-			}, { errors: [{ "msg": "TV show not create!" }] });
-		 
-
+		response(res, resolveDocs(tvShow), { errors: [{ "msg": "TV show not create!" }] });
 	}
 
 	async index(req, res) {
@@ -39,7 +34,7 @@ class FavoriteTvShow {
 				query = resolveQuerys(req.query),
 		 		tvShows = await Model.paginate({...query}, options) 
 			  
-			response(res, tvShows, { errors: [{ "msg": "no Favorite Tv Shows found!" }] });
+		response(res, tvShows, { errors: [{ "msg": "no Favorite Tv Shows found!" }] });
 
 	}
 
@@ -51,10 +46,9 @@ class FavoriteTvShow {
 				limit: limit
 			};
                                   
- 
 		const tvShow = await Model.paginate({ user_id }, options).catch(e => console.log(e))
  
-			response(res, tvShow, { errors: [{ "msg": "no Favorite Tv Show found!" }] });
+		response(res, tvShow, { errors: [{ "msg": "no Favorite Tv Show found!" }] });
 	}
 
 
@@ -63,18 +57,14 @@ class FavoriteTvShow {
 		 doc = req.body,
 		 tvShow = await Model.updateOne({ _id: mongoose.Types.ObjectId(_id) }, doc);
  
-			response(res, {
-				docs:[tvShow]
-			}, { errors: [{ "msg": "Could not update!" }] });
+		response(res, resolveDocs(tvShow), { errors: [{ "msg": "Could not update!" }] });
 	}
 
 	async destroy(req, res) {
 		const { _id } = req.params,
 		tvShow = await Model.deleteOne({ _id });
 
-		 response(res, {
-			docs:[tvShow]
-		 }, { errors: [{ "msg": "Unable to remove!" }] });
+		response(res, resolveDocs(tvShow), { errors: [{ "msg": "Unable to remove!" }] });
 	}
 
 

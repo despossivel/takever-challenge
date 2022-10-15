@@ -3,7 +3,8 @@ const Model = require('../models/TvShow'),
 	 {
 		resolveQuerys,
 		resolveOptions,
-		response
+		response,
+		resolveDocs
 	 } = require('../utils');
 
 
@@ -14,11 +15,8 @@ class TvShow {
 			tvShow = await Model.create({
 				...json
 			});
- 
-		 
-			response(res, {
-				docs:[tvShow]
-			}, { errors: [{ "msg": "Tv Show not create!" }] });
+  
+		response(res, resolveDocs(tvShow), { errors: [{ "msg": "Tv Show not create!" }] });
 
 	}
 
@@ -27,7 +25,7 @@ class TvShow {
 				query = resolveQuerys(req.query),
 		 		tvShows = await Model.paginate({...query}, options) 
 			  
-			response(res, tvShows, { errors: [{ "msg": "no Tv Shows found!" }] });
+		response(res, tvShows, { errors: [{ "msg": "no Tv Shows found!" }] });
 
 	}
 
@@ -35,9 +33,9 @@ class TvShow {
 		const { _id } = req.params,
 		 tvShow = await Model.findById({ _id }).catch(e => console.log(e))
 
-			response(res, {
-				docs: tvShow === null ? false : [tvShow]
-			}, { errors: [{ "msg": "no Tv Show found!" }] });
+		response(res, {
+			docs: tvShow === null ? false : [tvShow]
+		}, { errors: [{ "msg": "no Tv Show found!" }] });
 	}
 
 
@@ -46,19 +44,14 @@ class TvShow {
 		 doc = req.body,
 		 tvShow = await Model.updateOne({ _id: mongoose.Types.ObjectId(_id) }, doc);
 
-	 
-			response(res, {
-				docs:[tvShow]
-			}, { errors: [{ "msg": "Could not update!" }] });
-
-
+		response(res, resolveDocs(tvShow), { errors: [{ "msg": "Could not update!" }] });
 	}
 
 	async destroy(req, res) {
 		const { _id } = req.params,
 		tvShow = await Model.deleteOne({ _id });
  
-			response(res, {docs:[tvShow]}, { errors: [{ "msg": "Unable to remove!" }] });
+		response(res, resolveDocs(tvShow), { errors: [{ "msg": "Unable to remove!" }] });
 	}
 
 

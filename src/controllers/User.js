@@ -2,13 +2,13 @@ const SMTP = require('../services/SMTP'),
 	blowfish = require('../utils/blowfish'),
 	Model = require('../models/User'),
 	mongoose = require('mongoose'),
-	{resolveOptions, response} = require('../utils');
+	{resolveOptions,resolveDocs, response} = require('../utils');
 
 class User {
 
 	async index(req, res) {
-		const options = resolveOptions(req.query)
-		const users = await Model.paginate({}, options).catch(e => console.log(e))
+		const options = resolveOptions(req.query),
+		 users = await Model.paginate({}, options).catch(e => console.log(e))
 
 		response(res, users, { errors: [{ "msg": "No users found!" }] });
 	}
@@ -16,7 +16,7 @@ class User {
 	async show(req, res) {
 		const { _id } = req.params,
 		user = await Model.findById({ _id }).catch(e => console.log(e))
-  
+   
  		response(res, {
 			docs: user === null ? false : [user]
 		}, { errors: [{ "msg": "user not found!" }] });
@@ -32,9 +32,7 @@ class User {
 		// 	${process.env.HOST}/public/confirmar/conta/${_id}`, ``).catch(e => console.error(e))
 	 
 
-		response(res, {
-			docs:[user]
-		}, { errors: [{ "msg": "user not create!" }] });
+		response(res, resolveDocs(user), { errors: [{ "msg": "user not create!" }] });
 	}
 
 	async update(req, res) {
@@ -43,12 +41,7 @@ class User {
 		 doc = rest,
 		 user = await Model.updateOne({ _id: mongoose.Types.ObjectId(_id) }, doc);
  
-		 
-			response(res, {
-				docs:[
-					user
-				]
-			}, { errors: [{ "msg": "Could not update!" }] });
+		response(res, resolveDocs(user), { errors: [{ "msg": "Could not update!" }] });
 
 	}
 
@@ -56,9 +49,7 @@ class User {
 		const { _id } = req.params,
 		 user = await Model.deleteOne({ _id:  mongoose.Types.ObjectId(_id) });
  
-			response(res, {
-				docs:[user]
-			}, { errors: [{ "msg": "Unable to remove user!" }] });
+		response(res, resolveDocs(user), { errors: [{ "msg": "Unable to remove user!" }] });
 	}
 
 }

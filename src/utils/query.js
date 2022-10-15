@@ -34,7 +34,15 @@ const resolveOptions = (query) => {
 };
 
 
+const resolveDocs = (data) => {
+    return {
+        docs: [data]
+    }
+}
+
+
 module.exports = {
     resolveQuerys,
-    resolveOptions
+    resolveOptions,
+    resolveDocs
 }
