@@ -1,5 +1,9 @@
 const Model = require('../models/MostPopular'),
-	 mongoose = require('mongoose');
+	 mongoose = require('mongoose'),
+	 {
+		response,
+		resolveOptions
+	 } = require('../utils');
 
 
 class MostPopular {
@@ -9,28 +13,26 @@ class MostPopular {
 			mostPopular = await Model.create({
 				...json
 			});
- 
-			res.status(200).send(mostPopular);
-
+  
+			response(res, {
+				docs:[mostPopular]
+			}, { errors: [{ "msg": "Most Popular not create!" }] });
 	}
 
 	async index(req, res) {
-		const { page = 1, limit = 10 } = req.query,
-				options = {
-					page: page,
-					limit: limit
-				},
-				mostPopulars = await Model.paginate({},options) 
+		const options = resolveOptions(req.query),
+				mostPopulars = await Model.paginate({},options)
 
-		res.status(200).send(mostPopulars);
+			response(res, mostPopulars, { errors: [{ "msg": "no Most Popular not found!" }] });
 	}
 
 	async show(req, res) {
 		const { _id } = req.params,
 			mostPopular = await Model.findById({ _id }).catch(e => console.log(e));
-
-		!Boolean(mostPopular) ? res.status(404).send({ errors: [{ "msg": "Most Popular not found!" }] }) :
-			res.status(200).send(mostPopular);
+ 
+			response(res, {
+				docs: mostPopular === null ? false : [mostPopular]
+			}, { errors: [{ "msg": "no Most Popular found!" }] });
 	}
 
 	async update(req, res) {
@@ -38,18 +40,18 @@ class MostPopular {
 			doc = req.body,
 			mostPopular = await Model.updateOne({ _id: mongoose.Types.ObjectId(_id) }, doc);
 
-		mostPopular.n == 0 ?
-			res.status(422).send({ errors: [{ "msg": "Could not update!" }] }) :
-			res.status(200).send(mostPopular);
+			response(res, {
+				docs:[mostPopular]
+			}, { errors: [{ "msg": "Could not update!" }] });
 	}
 
 	async destroy(req, res) {
 		const { _id } = req.params,
 		 mostPopular = await Model.deleteOne({ _id });
 
-		mostPopular.n == 0 ?
-			res.status(422).send({ errors: [{ "msg": "Unable to remove!" }] }) :
-			res.status(200).send(mostPopular);
+		 response(res, {
+			docs:[mostPopular]
+		 }, { errors: [{ "msg": "Unable to remove!" }] });
 	}
 
 

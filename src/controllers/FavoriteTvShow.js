@@ -3,7 +3,9 @@ const Model = require('../models/FavoriteTvShow'),
 	 ObjectId = require('mongodb').ObjectID,
 	mongoose = require('mongoose'),
 	 {
-		resolveQuerys
+		resolveQuerys,
+		resolveOptions,
+		response
 	 } = require('../utils');
 
 
@@ -24,21 +26,20 @@ class FavoriteTvShow {
 				...json
 			});
  
-			res.status(200).send(tvShow);
+
+			response(res, {
+				docs: [tvShow]
+			}, { errors: [{ "msg": "TV show not create!" }] });
+		 
 
 	}
 
 	async index(req, res) {
-		const { page = 1, limit = 10 } = req.query,
-				options = {
-					page: page,
-					limit: limit
-				},
+		const options = resolveOptions(req.query),
 				query = resolveQuerys(req.query),
 		 		tvShows = await Model.paginate({...query}, options) 
-			 
-		!Boolean(tvShows) ? res.status(404).send({ errors: [{ "msg": "Favorite Tv Shows not found!" }] }) :
-			res.status(200).send(tvShows);
+			  
+			response(res, tvShows, { errors: [{ "msg": "no Favorite Tv Shows found!" }] });
 
 	}
 
@@ -52,9 +53,8 @@ class FavoriteTvShow {
                                   
  
 		const tvShow = await Model.paginate({ user_id }, options).catch(e => console.log(e))
-
-		!Boolean(tvShow) ? res.status(404).send({ errors: [{ "msg": "Favorite Tv Show not found!" }] }) :
-			res.status(200).send(tvShow);
+ 
+			response(res, tvShow, { errors: [{ "msg": "no Favorite Tv Show found!" }] });
 	}
 
 
@@ -62,19 +62,19 @@ class FavoriteTvShow {
 		const { _id } = req.params,
 		 doc = req.body,
 		 tvShow = await Model.updateOne({ _id: mongoose.Types.ObjectId(_id) }, doc);
-
-		tvShow.n == 0 ?
-			res.status(422).send({ errors: [{ "msg": "Could not update!" }] }) :
-			res.status(200).send(tvShow);
+ 
+			response(res, {
+				docs:[tvShow]
+			}, { errors: [{ "msg": "Could not update!" }] });
 	}
 
 	async destroy(req, res) {
 		const { _id } = req.params,
 		tvShow = await Model.deleteOne({ _id });
 
-		tvShow.n == 0 ?
-			res.status(422).send({ errors: [{ "msg": "Unable to remove!" }] }) :
-			res.status(200).send(tvShow);
+		 response(res, {
+			docs:[tvShow]
+		 }, { errors: [{ "msg": "Unable to remove!" }] });
 	}
 
 

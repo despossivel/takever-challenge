@@ -1,13 +1,14 @@
-class Response {
-	async send(res, data) {
-		try {
-			const { status, ...response } = data;
-			res.status(status).send(response);
-			return;
-		} catch (e) {
-			throw e;
-		}
-	}
+
+const response = (res, data, payloadError) => {
+
+
+
+	if(!Boolean(data?.docs?.length)) return res.status(404).send(payloadError)
+	// if(!Boolean(data.n)) return res.status(404).send(payloadError)
+  
+	return res.status(200).send(data);
 }
 
-module.exports = _ => new Response();
+module.exports = {
+	response
+}

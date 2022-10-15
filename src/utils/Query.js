@@ -22,6 +22,22 @@ const resolveQuerys = (queryParams) => {
 }
 
 
+const resolveOptions = (query) => {
+    const { page = 1, limit = 10, sort_field = 'name', sort_direction = -1 } = query,
+    options = {
+        page: page,
+        limit: limit,
+        sort: { [sort_field]: sort_direction  },
+        collation: { 
+            locale: 'en'
+        }
+    };
+
+    return options;
+};
+
+
 module.exports = {
-    resolveQuerys
+    resolveQuerys,
+    resolveOptions
 }

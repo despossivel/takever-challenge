@@ -27,7 +27,9 @@ describe('Users', () => {
             // .set('Authorization', token)
             .send(usuarioDemo).expect(200)
 
-        usuarioDemo._id = response.body._id;
+            // console.log(response.body.docs[0]._id)
+
+        usuarioDemo._id = response.body.docs[0]._id;
 
     });
 

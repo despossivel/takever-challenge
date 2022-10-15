@@ -13,9 +13,14 @@ const connection = mongoose.connect(`mongodb+srv://dev:qazx123.@cluster0-ep251.g
   
 const TvShow = require('../src/models/TvShow');
 const MostPopular = require('../src/models/MostPopular');
+const FavoriteTvShow = require('../src/models/FavoriteTvShow');
+
 
 const run = async () => {
-    await Promise.all([MostPopular.deleteMany({}), TvShow.deleteMany({})])
+ 
+    await Promise.all([MostPopular.deleteMany({}), 
+        TvShow.deleteMany({}),
+        FavoriteTvShow.deleteMany({})])
     const [ mostPopular ] = await Promise.all([getMostPopular()])
     const INSERT = await MostPopular.insertMany(mostPopular)
     console.log('Buscando detalhes por tv show...')
@@ -29,6 +34,6 @@ const run = async () => {
  
 
  
-//  run()
-console.log('npm run cron')
+ run()
+ 
  

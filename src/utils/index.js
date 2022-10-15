@@ -1,9 +1,7 @@
-const {
-    resolveQuerys
-} = require('./Query')
-
-
+const queryUtils = require('./query'),
+response = require('./response')
 
 module.exports = {
-    resolveQuerys
+    ...queryUtils,
+    ...response
 };

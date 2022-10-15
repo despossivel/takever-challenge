@@ -1,5 +1,6 @@
 const mongoose = require('mongoose'),
-    blowfish = require('../utils/blowfish');
+    blowfish = require('../utils/blowfish'),
+    mongoosePaginate = require('mongoose-paginate-v2');
 
 const User = new mongoose.Schema({
     name: {
@@ -32,6 +33,13 @@ const User = new mongoose.Schema({
         this.password = blowfish.encrypt(this.password);
         next();
     })
+
+
+    User.plugin(mongoosePaginate);
+
+	const Model = mongoose.model('user', User);
+
+	Model.paginate().then({})
  
 
-module.exports = mongoose.model('User', User)
+module.exports = Model;

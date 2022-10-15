@@ -1,7 +1,9 @@
 const Model = require('../models/TvShow'),
 	 mongoose = require('mongoose'),
 	 {
-		resolveQuerys
+		resolveQuerys,
+		resolveOptions,
+		response
 	 } = require('../utils');
 
 
@@ -13,21 +15,19 @@ class TvShow {
 				...json
 			});
  
-			res.status(200).send(tvShow);
+		 
+			response(res, {
+				docs:[tvShow]
+			}, { errors: [{ "msg": "Tv Show not create!" }] });
 
 	}
 
 	async index(req, res) {
-		const { page = 1, limit = 10 } = req.query,
-				options = {
-					page: page,
-					limit: limit
-				},
+		const options = resolveOptions(req.query),
 				query = resolveQuerys(req.query),
 		 		tvShows = await Model.paginate({...query}, options) 
-			 
-		!Boolean(tvShows) ? res.status(404).send({ errors: [{ "msg": "Tv Shows not found!" }] }) :
-			res.status(200).send(tvShows);
+			  
+			response(res, tvShows, { errors: [{ "msg": "no Tv Shows found!" }] });
 
 	}
 
@@ -35,8 +35,9 @@ class TvShow {
 		const { _id } = req.params,
 		 tvShow = await Model.findById({ _id }).catch(e => console.log(e))
 
-		!Boolean(tvShow) ? res.status(404).send({ errors: [{ "msg": "Tv Show not found!" }] }) :
-			res.status(200).send(tvShow);
+			response(res, {
+				docs: tvShow === null ? false : [tvShow]
+			}, { errors: [{ "msg": "no Tv Show found!" }] });
 	}
 
 
@@ -45,18 +46,19 @@ class TvShow {
 		 doc = req.body,
 		 tvShow = await Model.updateOne({ _id: mongoose.Types.ObjectId(_id) }, doc);
 
-		tvShow.n == 0 ?
-			res.status(422).send({ errors: [{ "msg": "Could not update!" }] }) :
-			res.status(200).send(tvShow);
+	 
+			response(res, {
+				docs:[tvShow]
+			}, { errors: [{ "msg": "Could not update!" }] });
+
+
 	}
 
 	async destroy(req, res) {
 		const { _id } = req.params,
 		tvShow = await Model.deleteOne({ _id });
-
-		tvShow.n == 0 ?
-			res.status(422).send({ errors: [{ "msg": "Unable to remove!" }] }) :
-			res.status(200).send(tvShow);
+ 
+			response(res, {docs:[tvShow]}, { errors: [{ "msg": "Unable to remove!" }] });
 	}
 
 
