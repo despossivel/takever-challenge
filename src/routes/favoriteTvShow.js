@@ -1,7 +1,7 @@
  const { Router } = require('express'),
     route = new Router(),
     middleware = require('../middlewares/routes/favoriteTvShow'),
-    TvShow = require('../controllers/FavoriteTvShow');
+    TvShow = require('../controllers/favoriteTvShow');
 
 route.post('/favorite/tv/show/create', middleware.create, TvShow.store)
 route.get('/favorite/tv/show/get', middleware.index, TvShow.index)
