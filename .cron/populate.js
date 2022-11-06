@@ -25,7 +25,8 @@ const run = async () => {
  
     await Promise.all([MostPopular.deleteMany({}), 
         TvShow.deleteMany({}),
-        FavoriteTvShow.deleteMany({})])
+        FavoriteTvShow.deleteMany({})]);
+        
     const [ mostPopular ] = await Promise.all([getMostPopular()])
     const INSERT = await MostPopular.insertMany(mostPopular)
     console.log('Buscando detalhes por tv show...')
